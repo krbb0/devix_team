@@ -1,0 +1,227 @@
+.puzzle-container {
+  background: linear-gradient(180deg, #E3F2FD 0%, #BBDEFB 100%);
+  min-height: 100vh;
+}
+
+.puzzle-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: transparent;
+}
+
+.puzzle-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1565C0;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(255, 255, 255, 0.5);
+}
+
+.puzzle-content {
+  padding: 20px;
+  padding-bottom: 120px;
+}
+
+.puzzle-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  animation: fadeIn 0.6s ease;
+}
+
+.info-badge {
+  background: #FFFFFF;
+  padding: 12px 20px;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.info-badge.score {
+  background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+}
+
+.info-label {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1565C0;
+}
+
+.info-badge.score .info-label {
+  color: #FFFFFF;
+}
+
+.info-icon {
+  font-size: 20px;
+}
+
+.puzzle-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.3);
+  padding: 20px;
+  border-radius: 24px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(21, 101, 192, 0.2);
+  margin-bottom: 32px;
+}
+
+.puzzle-item {
+  aspect-ratio: 1;
+  background: linear-gradient(135deg, #FFFFFF 0%, #F5F5F5 100%);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.5s ease forwards;
+  opacity: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.puzzle-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.5) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.puzzle-item:hover {
+  transform: scale(1.05) translateY(-4px);
+  box-shadow: 0 8px 24px rgba(21, 101, 192, 0.3);
+}
+
+.puzzle-item:hover::before {
+  opacity: 1;
+}
+
+.puzzle-item.selected {
+  background: linear-gradient(135deg, #42A5F5 0%, #1E88E5 100%);
+  transform: scale(0.95);
+  box-shadow: 0 0 20px rgba(33, 150, 243, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.3);
+  animation: selectedPulse 0.6s ease;
+}
+
+.puzzle-item.selected .puzzle-emoji {
+  transform: scale(1.2);
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+.puzzle-emoji {
+  font-size: 40px;
+  transition: all 0.3s ease;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.puzzle-targets {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  animation: fadeIn 0.8s ease;
+}
+
+.target-item {
+  animation: bounce 2s ease-in-out infinite;
+}
+
+.target-item:nth-child(1) { animation-delay: 0s; }
+.target-item:nth-child(2) { animation-delay: 0.2s; }
+.target-item:nth-child(3) { animation-delay: 0.4s; }
+.target-item:nth-child(4) { animation-delay: 0.6s; }
+
+.target-circle {
+  width: 64px;
+  height: 64px;
+  background: #FFFFFF;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+}
+
+.target-circle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.target-emoji {
+  font-size: 32px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes selectedPulse {
+  0% {
+    transform: scale(0.95);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(0.95);
+  }
+}
+
+@media (max-width: 428px) {
+  .puzzle-grid {
+    gap: 10px;
+    padding: 16px;
+  }
+  
+  .puzzle-emoji {
+    font-size: 36px;
+  }
+  
+  .target-circle {
+    width: 56px;
+    height: 56px;
+  }
+  
+  .target-emoji {
+    font-size: 28px;
+  }
+}

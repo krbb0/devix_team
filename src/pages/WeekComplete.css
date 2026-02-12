@@ -1,0 +1,223 @@
+.week-complete-container {
+  background: linear-gradient(180deg, #FFE5B4 0%, #FFDAB9 50%, #FFA07A 100%);
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.week-complete-content {
+  padding: 60px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.confetti-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  opacity: 0;
+  animation: confettiFall 3s ease-in-out infinite;
+}
+
+@keyframes confettiFall {
+  0% {
+    top: -10%;
+    opacity: 1;
+    transform: rotate(0deg);
+  }
+  100% {
+    top: 110%;
+    opacity: 0;
+    transform: rotate(720deg);
+  }
+}
+
+.trophy-celebration {
+  margin-bottom: 32px;
+  animation: trophyEntrance 1s ease;
+}
+
+.trophy-large {
+  font-size: 160px;
+  filter: drop-shadow(0 12px 32px rgba(255, 107, 53, 0.4));
+  animation: bounce 2s ease-in-out infinite;
+}
+
+.celebration-message {
+  text-align: center;
+  margin-bottom: 48px;
+  animation: fadeIn 1s ease 0.5s backwards;
+}
+
+.celebration-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: #8B4513;
+  margin: 0 0 16px 0;
+  text-shadow: 0 4px 12px rgba(255, 255, 255, 0.5);
+}
+
+.celebration-subtitle {
+  font-size: 16px;
+  color: #A0522D;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.mini-calendar {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(10px);
+  margin-bottom: 40px;
+  animation: fadeIn 1s ease 0.8s backwards;
+}
+
+.calendar-row {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.mini-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.mini-day-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: #8E8E93;
+  letter-spacing: 0.5px;
+}
+
+.mini-day-dot {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #FFD60A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(255, 214, 10, 0.4);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.mini-day-dot:nth-child(1) { animation-delay: 0s; }
+.mini-day-dot:nth-child(2) { animation-delay: 0.1s; }
+.mini-day-dot:nth-child(3) { animation-delay: 0.2s; }
+.mini-day-dot:nth-child(4) { animation-delay: 0.3s; }
+.mini-day-dot:nth-child(5) { animation-delay: 0.4s; }
+.mini-day-dot:nth-child(6) { animation-delay: 0.5s; }
+.mini-day-dot:nth-child(7) { animation-delay: 0.6s; }
+
+.fire-small {
+  font-size: 16px;
+}
+
+.continue-celebration {
+  width: 100%;
+  max-width: 320px;
+  height: 64px;
+  background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+  border: none;
+  border-radius: 32px;
+  color: #FFFFFF;
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(255, 107, 53, 0.4);
+  transition: all 0.3s ease;
+  animation: fadeIn 1s ease 1.2s backwards;
+}
+
+.continue-celebration:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(255, 107, 53, 0.5);
+}
+
+.continue-celebration:active {
+  transform: translateY(-2px);
+}
+
+@keyframes trophyEntrance {
+  0% {
+    opacity: 0;
+    transform: scale(0) rotate(-180deg);
+  }
+  60% {
+    transform: scale(1.2) rotate(10deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-20px) scale(1.05);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+@media (max-width: 428px) {
+  .trophy-large {
+    font-size: 140px;
+  }
+  
+  .celebration-title {
+    font-size: 24px;
+  }
+  
+  .calendar-row {
+    gap: 8px;
+  }
+  
+  .mini-day-dot {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .fire-small {
+    font-size: 14px;
+  }
+}
