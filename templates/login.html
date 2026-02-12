@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neural Presentation Page</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="sign_card">
+        <div class="sign_logo">
+            <a>
+                <img src="../sources/image-1770840633604.png" alt="">
+            </a>
+        </div>
+        <form action="" class="sign_form">
+            <div class="sign_header">
+                <h1>Sign in</h1>
+                <h3>Give creadential to sign in your account</h3>
+            </div>
+            <div class="sign_email">
+                <h2>Email</h2>
+                <input type="email" placeholder="Type your email address">
+            </div>
+            <div class="sign_password">
+                <h2>Password</h2>
+                <div class="password_input_wrapper">
+                    <input type="password" id="password_input" placeholder="Type your password">
+                    <button type="button" class="toggle_password_btn" id="toggle_password">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="remember_forgot_password">
+                <div class="remember_me">
+                    <label class="toggle">
+                        <input type="checkbox" id="remember_me">
+
+                        <svg class="toggle_svg" width="43" height="40" viewBox="0 0 43 40" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <rect class="bg" opacity="0.25" x="3.56787" y="10.2778" width="35.6779" height="19.4444"
+                                rx="9.72222" fill="#1E252D" />
+                            <ellipse class="circle" cx="13.9796" cy="19.9998" rx="8.32484" ry="7.77778" fill="white" />
+                        </svg>
+                    </label>
+                    <label for="remember_me">Remember me</label>
+                </div>
+                <div class="forgot_password">
+                    <a href="#">Forgot password?</a>
+                </div>
+            </div>
+            <label for="sign_submit" class="submit_button">
+                <input type="submit" id="sign_submit" value="SIGN IN">
+            </label>
+
+        </form>
+        <div class="sign_up_link">
+            <h3>Don't have an account</h3>
+            <a href="" id="sign_up">SIGN UP</a>
+        </div>
+    </div>
+    <script>
+        document.getElementById('toggle_password').addEventListener('click', function (e) {
+            e.preventDefault();
+            const passwordInput = document.getElementById('password_input');
+            const isPassword = passwordInput.type === 'password';
+            passwordInput.type = isPassword ? 'text' : 'password';
+        });
+    </script>
+</body>
+
+</html>
