@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Devix - Pill Reminder</title>
+    
+    <style>
+       
+     @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+          
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #2563EB;
+            --secondary: #3B82F6;
+            --success: #4CAF50;
+            --warning: #FFA726;
+            --bg: #F8FAFB;
+            --card-bg: #FFFFFF;
+            --text: #1E293B;
+            --text-light: #64748B;
+            --border: #E2E8F0;
+            --shadow: rgba(15, 23, 42, 0.08);
+        }
+        
+        body {
+             font-family: "Poppins", sans-serif;
+            background: linear-gradient(180deg, #F0F4FF 0%, #FAFBFF 100%);
+            color: var(--text);
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+        
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            background: var(--bg);
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 50px 24px 30px;
+            border-radius: 0 0 32px 32px;
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.25);
+            position: relative;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 15px;
+        }
+        
+        /* Medicine List */
+        .medicine-list {
+            padding: 24px;
+        }
+        
+        .add-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .add-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+        }
+        
+        .medicine-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 12px var(--shadow);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .medicine-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px var(--shadow);
+        }
+        
+        .medicine-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 12px;
+        }
+        
+        .medicine-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+        
+        .medicine-info {
+            flex: 1;
+        }
+        
+        .medicine-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+        
+        .medicine-dose {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+        
+        .medicine-schedule {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            color: var(--text-light);
+            margin-top: 8px;
+        }
+        
+        .schedule-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .medicine-actions {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+        
+        .menu-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            color: var(--text-light);
+            padding: 4px;
+        }
+        
+        .menu-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px var(--shadow);
+            padding: 8px;
+            min-width: 140px;
+            display: none;
+            z-index: 10;
+        }
+        
+        .menu-dropdown.show {
+            display: block;
+        }
+        
+        .menu-item {
+            padding: 10px 12px;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 14px;
+            transition:  0.2s;
+            color: var(--text);
+            text-decoration: none;
+            display: block;
+        }
+        
+        .menu-item:hover {
+            background: var(--bg);
+        }
+        
+        .menu-item.delete {
+            color: #EF4444;
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0 16px;
+            box-shadow: 0 -4px 12px var(--shadow);
+            max-width: 480px;
+            margin: 0 auto;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            padding: 8px 20px;
+            border-radius: 12px;
+            transition: all 0.3s;
+            border: none;
+            background: none;
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .nav-item.active {
+            background: rgba(37, 99, 235, 0.1);
+        }
+        
+        .nav-icon {
+            font-size: 24px;
+            color: var(--text-light);
+            transition: all 0.3s;
+        }
+        
+        .nav-item.active .nav-icon {
+            color: var(--primary);
+        }
+        
+        .nav-label {
+            font-size: 12px;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+        
+        .nav-item.active .nav-label {
+            color: var(--primary);
+        }
+        
+        /* Hide elements on mobile */
+        @media (max-width: 480px) {
+            .container {
+                max-width: 100%;
+            }
+            
+            .bottom-nav {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>PILL REMINDER</h1>
+            <p>Today<br><span style="opacity: 0.7; font-size: 13px;">Thu 25 Jan</span></p>
+        </div>
+        
+        <div class="medicine-list">
+            <a href="add-medicine.html" class="add-btn">
+                <span>+</span>
+                Add
+            </a>
+            
+            <div id="medicineContainer"></div>
+        </div>
+        
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <a href="index.html" class="nav-item active">
+                <div class="nav-icon">🏠</div>
+                <div class="nav-label">Home</div>
+            </a>
+            <a href="tracker.html" class="nav-item">
+                <div class="nav-icon">📊</div>
+                <div class="nav-label">Tracker</div>
+            </a>
+            <a href="dashboard.html" class="nav-item">
+                <div class="nav-icon">💧</div>
+                <div class="nav-label">Overview</div>
+            </a>
+            <a href="#" class="nav-item" onclick="alert('Profile coming soon!'); return false;">
+                <div class="nav-icon">👤</div>
+                <div class="nav-label">Account</div>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Load medicines from localStorage or use default
+        function getMedicines() {
+            const stored = localStorage.getItem('medicines');
+            if (stored) {
+                return JSON.parse(stored);
+            }
+            return [
+                { id: 1, name: 'Acarbose', dose: '50mg', icon: '💊', color: '#E8D7FF', time: '5:30 AM', frequency: 'Every day' },
+                { id: 2, name: 'Benefix', dose: '10mg', icon: '💉', color: '#D7F0FF', time: '10:30 AM', frequency: 'Every day' },
+                { id: 3, name: 'Calcium Chloride', dose: '50mg', icon: '💊', color: '#FFE8E8', time: '1:00 PM', frequency: 'Every week' },
+                { id: 4, name: 'Fabrazyme', dose: '200mg', icon: '💊', color: '#D7E8FF', time: '3:10 PM', frequency: 'Every week' },
+                { id: 5, name: 'Ketoprofen', dose: '10mg', icon: '🩹', color: '#E8E8E8', time: '9:00 PM', frequency: 'Every day' },
+                { id: 6, name: 'Adenovirus', dose: '0.3', icon: '💉', color: '#D7FFE8', time: '9:30 PM', frequency: 'Every day' },
+                { id: 7, name: 'Macrobid', dose: '0mg', icon: '💊', color: '#E8FFD7', time: '9:30 PM', frequency: 'Every day' }
+            ];
+        }
+        
+        function saveMedicines(medicines) {
+            localStorage.setItem('medicines', JSON.stringify(medicines));
+        }
+        
+        let medicines = getMedicines();
+        
+        function renderMedicines() {
+            const container = document.getElementById('medicineContainer');
+            container.innerHTML = medicines.map(med => {
+                // Format duration display
+                let durationDisplay = '';
+                if (med.duration && med.durationUnit) {
+                    durationDisplay = `${med.duration} ${med.durationUnit}`;
+                } else if (med.duration) {
+                    durationDisplay = `${med.duration} days`;
+                }
+                
+                return `
+                <div class="medicine-card" data-id="${med.id}">
+                    <div class="medicine-header">
+                        <div class="medicine-icon" style="background: ${med.color}">
+                            ${med.icon}
+                        </div>
+                        <div class="medicine-info">
+                            <div class="medicine-name">${med.name}</div>
+                            <div class="medicine-dose">${med.dose}${durationDisplay ? ' • ' + durationDisplay : ''}</div>
+                        </div>
+                    </div>
+                    <div class="medicine-schedule">
+                        <span class="schedule-item">⏰ ${med.time}</span>
+                        <span class="schedule-item">📅 ${med.frequency}</span>
+                        <span class="schedule-item">🔔</span>
+                    </div>
+                    <div class="medicine-actions">
+                        <button class="menu-btn" data-id="${med.id}">⋯</button>
+                        <div class="menu-dropdown" id="menu-${med.id}">
+                            <a href="add-medicine.html?id=${med.id}" class="menu-item">Edit</a>
+                            <button class="menu-item delete" data-action="delete" data-id="${med.id}">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            }).join('');
+            
+            // Add event listeners
+            document.querySelectorAll('.menu-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const id = this.getAttribute('data-id');
+                    toggleMenu(parseInt(id), e);
+                });
+            });
+            
+            document.querySelectorAll('.menu-item[data-action="delete"]').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const id = this.getAttribute('data-id');
+                    deleteMedicine(parseInt(id));
+                });
+            });
+        }
+        
+        function toggleMenu(id, event) {
+            event.stopPropagation();
+            const menu = document.getElementById(`menu-${id}`);
+            document.querySelectorAll('.menu-dropdown').forEach(m => {
+                if (m.id !== `menu-${id}`) m.classList.remove('show');
+            });
+            menu.classList.toggle('show');
+        }
+        
+        document.addEventListener('click', () => {
+            document.querySelectorAll('.menu-dropdown').forEach(m => m.classList.remove('show'));
+        });
+        
+        function deleteMedicine(id) {
+            document.querySelectorAll('.menu-dropdown').forEach(m => m.classList.remove('show'));
+            
+            if (confirm('Are you sure you want to delete this medicine?')) {
+                medicines = medicines.filter(m => m.id !== id);
+                saveMedicines(medicines);
+                renderMedicines();
+            }
+        }
+        
+        // Initialize
+        renderMedicines();
+    </script>
+</body>
+</html>

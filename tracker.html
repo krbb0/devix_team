@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Devix - Tracker</title>
+    
+    <style>
+       @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #2563EB;
+            --secondary: #3B82F6;
+            --success: #4CAF50;
+            --warning: #FFA726;
+            --bg: #F8FAFB;
+            --card-bg: #FFFFFF;
+            --text: #1E293B;
+            --text-light: #64748B;
+            --border: #E2E8F0;
+            --shadow: rgba(15, 23, 42, 0.08);
+        }
+        
+        body {
+             font-family: "Poppins", sans-serif;
+            background: linear-gradient(180deg, #F0F4FF 0%, #FAFBFF 100%);
+            color: var(--text);
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+        
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            background: var(--bg);
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 50px 24px 30px;
+            border-radius: 0 0 32px 32px;
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.25);
+            position: relative;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 15px;
+        }
+        
+        /* Daily Tracker */
+        .tracker-section {
+            padding: 24px;
+        }
+        
+        .tracker-card {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 12px var(--shadow);
+        }
+        
+        .tracker-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .tracker-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text);
+        }
+        
+        .tracker-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .tracker-count {
+            font-size: 14px;
+            color: var(--text-light);
+            font-family: 'Space Mono', monospace;
+        }
+        
+        .edit-target-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--primary);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .edit-target-btn:hover {
+            background: rgba(37, 99, 235, 0.05);
+            border-color: var(--primary);
+        }
+        
+        .tracker-icons {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+        }
+        
+        .tracker-icon {
+            aspect-ratio: 1;
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .tracker-icon.filled {
+            border-style: solid;
+            border-color: transparent;
+            background: linear-gradient(135deg, #2563EB 0%, #3B82F6 100%);
+            animation: pop 0.5s ease;
+        }
+        
+        @keyframes pop {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        
+        .tracker-icon.empty:hover {
+            border-color: var(--primary);
+            background: rgba(91, 124, 255, 0.05);
+        }
+        
+        .completion-badge {
+            background: linear-gradient(135deg, #4CAF50 0%, #66BB6A 100%);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 16px;
+            text-align: center;
+            font-weight: 600;
+            margin-top: 16px;
+            display: none;
+            animation: slideIn 0.5s ease;
+        }
+        
+        .completion-badge.show {
+            display: block;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Modal for editing tracker target */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .modal.show {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 24px;
+            padding: 32px 24px;
+            max-width: 400px;
+            width: 90%;
+            animation: slideUp 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+        
+        .modal-subtitle {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 24px;
+        }
+        
+        .modal-input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: inherit;
+            margin-bottom: 20px;
+            transition: border 0.3s;
+        }
+        
+        .modal-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .modal-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        
+        .btn {
+            padding: 16px;
+            border: none;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-cancel {
+            background: #E2E8F0;
+            color: var(--text);
+        }
+        
+        .btn-save {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+        
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0 16px;
+            box-shadow: 0 -4px 12px var(--shadow);
+            max-width: 480px;
+            margin: 0 auto;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            padding: 8px 20px;
+            border-radius: 12px;
+            transition: all 0.3s;
+            border: none;
+            background: none;
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .nav-item.active {
+            background: rgba(37, 99, 235, 0.1);
+        }
+        
+        .nav-icon {
+            font-size: 24px;
+            color: var(--text-light);
+            transition: all 0.3s;
+        }
+        
+        .nav-item.active .nav-icon {
+            color: var(--primary);
+        }
+        
+        .nav-label {
+            font-size: 12px;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+        
+        .nav-item.active .nav-label {
+            color: var(--primary);
+        }
+        
+        /* Hide elements on mobile */
+        @media (max-width: 480px) {
+            .container {
+                max-width: 100%;
+            }
+            
+            .bottom-nav {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Personnaliser le journal</h1>
+        </div>
+        
+        <div class="tracker-section">
+            <div class="tracker-card">
+                <div class="tracker-header">
+                    <span class="tracker-title">Eau (0.5 L)</span>
+                    <div class="tracker-right">
+                        <span class="tracker-count" id="waterCount">0/5</span>
+                        <button class="edit-target-btn" onclick="editTarget('water', 'Eau (0.5 L)')">Edit</button>
+                    </div>
+                </div>
+                <div class="tracker-icons" id="waterTracker"></div>
+                <div class="completion-badge" id="waterBadge">🎉 Goal Complete! Great job!</div>
+            </div>
+            
+            <div class="tracker-card">
+                <div class="tracker-header">
+                    <span class="tracker-title">Activité physique</span>
+                    <div class="tracker-right">
+                        <span class="tracker-count" id="activityCount">0/8</span>
+                        <button class="edit-target-btn" onclick="editTarget('activity', 'Activité physique')">Edit</button>
+                    </div>
+                </div>
+                <div class="tracker-icons" id="activityTracker"></div>
+                <div class="completion-badge" id="activityBadge">🎉 Goal Complete! Great job!</div>
+            </div>
+            
+            <div class="tracker-card">
+                <div class="tracker-header">
+                    <span class="tracker-title">Compteur de legumes</span>
+                    <div class="tracker-right">
+                        <span class="tracker-count" id="vegCount">0/5</span>
+                        <button class="edit-target-btn" onclick="editTarget('veg', 'Compteur de legumes')">Edit</button>
+                    </div>
+                </div>
+                <div class="tracker-icons" id="vegTracker"></div>
+                <div class="completion-badge" id="vegBadge">🎉 Goal Complete! Great job!</div>
+            </div>
+            
+            <div class="tracker-card">
+                <div class="tracker-header">
+                    <span class="tracker-title">Compteur de fruits</span>
+                    <div class="tracker-right">
+                        <span class="tracker-count" id="fruitCount">0/5</span>
+                        <button class="edit-target-btn" onclick="editTarget('fruit', 'Compteur de fruits')">Edit</button>
+                    </div>
+                </div>
+                <div class="tracker-icons" id="fruitTracker"></div>
+                <div class="completion-badge" id="fruitBadge">🎉 Goal Complete! Great job!</div>
+            </div>
+        </div>
+        
+        <!-- Modal for editing tracker targets -->
+        <div id="targetModal" class="modal">
+            <div class="modal-content">
+                <h3 class="modal-title" id="modalTitle">Edit Target</h3>
+                <p class="modal-subtitle">Set your daily goal</p>
+                <input type="number" id="modalInput" class="modal-input" min="1" max="20" placeholder="Enter target">
+                <div class="modal-actions">
+                    <button class="btn btn-cancel" onclick="closeModal()">Cancel</button>
+                    <button class="btn btn-save" onclick="saveTarget()">Save</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <a href="index.html" class="nav-item">
+                <div class="nav-icon">🏠</div>
+                <div class="nav-label">Home</div>
+            </a>
+            <a href="tracker.html" class="nav-item active">
+                <div class="nav-icon">📊</div>
+                <div class="nav-label">Tracker</div>
+            </a>
+            <a href="dashboard.html" class="nav-item">
+                <div class="nav-icon">💧</div>
+                <div class="nav-label">Overview</div>
+            </a>
+            <a href="#" class="nav-item" onclick="alert('Profile coming soon!'); return false;">
+                <div class="nav-icon">👤</div>
+                <div class="nav-label">Account</div>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Load trackers from localStorage or use default
+        function getTrackers() {
+            const stored = localStorage.getItem('trackers');
+            if (stored) {
+                return JSON.parse(stored);
+            }
+            return {
+                water: { count: 0, max: 5, icon: '💧', filled: [] },
+                activity: { count: 0, max: 8, icon: '👣', filled: [] },
+                veg: { count: 0, max: 5, icon: '🥦', filled: [] },
+                fruit: { count: 0, max: 5, icon: '🍓', filled: [] }
+            };
+        }
+        
+        function saveTrackers(trackers) {
+            localStorage.setItem('trackers', JSON.stringify(trackers));
+        }
+        
+        let trackers = getTrackers();
+        let currentEditTracker = null;
+        
+        // Tracker Functions
+        function initTrackers() {
+            ['water', 'activity', 'veg', 'fruit'].forEach(type => {
+                const container = document.getElementById(`${type}Tracker`);
+                const tracker = trackers[type];
+                
+                if (!container) return;
+                
+                container.innerHTML = '';
+                for (let i = 0; i < tracker.max; i++) {
+                    const icon = document.createElement('div');
+                    icon.className = tracker.filled.includes(i) ? 'tracker-icon filled' : 'tracker-icon empty';
+                    icon.textContent = tracker.icon;
+                    icon.onclick = () => toggleTrackerIcon(type, i);
+                    container.appendChild(icon);
+                }
+                
+                const countElement = document.getElementById(`${type}Count`);
+                if (countElement) {
+                    countElement.textContent = `${tracker.count}/${tracker.max}`;
+                }
+            });
+        }
+        
+        function toggleTrackerIcon(type, index) {
+            const tracker = trackers[type];
+            const container = document.getElementById(`${type}Tracker`);
+            if (!container) return;
+            
+            const icons = container.querySelectorAll('.tracker-icon');
+            if (!icons || !icons[index]) return;
+            
+            if (tracker.filled.includes(index)) {
+                tracker.filled = tracker.filled.filter(i => i !== index);
+                icons[index].classList.remove('filled');
+                icons[index].classList.add('empty');
+            } else {
+                tracker.filled.push(index);
+                icons[index].classList.remove('empty');
+                icons[index].classList.add('filled');
+            }
+            
+            tracker.count = tracker.filled.length;
+            const countElement = document.getElementById(`${type}Count`);
+            if (countElement) {
+                countElement.textContent = `${tracker.count}/${tracker.max}`;
+            }
+            
+            saveTrackers(trackers);
+            
+            // Show badge if this tracker is complete
+            const badge = document.getElementById(`${type}Badge`);
+            if (tracker.count === tracker.max && badge) {
+                badge.classList.add('show');
+            } else if (badge) {
+                badge.classList.remove('show');
+            }
+            
+            // Check if BOTH veg AND fruit are complete (not water or activity)
+            if (type === 'veg' || type === 'fruit') {
+                const vegTracker = trackers.veg;
+                const fruitTracker = trackers.fruit;
+                
+                // Only reset when BOTH are complete
+                if (vegTracker.count === vegTracker.max && fruitTracker.count === fruitTracker.max) {
+                    setTimeout(() => {
+                        // Reset vegetables
+                        const vegContainer = document.getElementById('vegTracker');
+                        const vegIcons = vegContainer.querySelectorAll('.tracker-icon');
+                        const vegCountElement = document.getElementById('vegCount');
+                        const vegBadge = document.getElementById('vegBadge');
+                        
+                        vegTracker.filled = [];
+                        vegTracker.count = 0;
+                        vegIcons.forEach(icon => {
+                            icon.classList.remove('filled');
+                            icon.classList.add('empty');
+                        });
+                        if (vegCountElement) {
+                            vegCountElement.textContent = `0/${vegTracker.max}`;
+                        }
+                        if (vegBadge) {
+                            vegBadge.classList.remove('show');
+                        }
+                        
+                        // Reset fruits
+                        const fruitContainer = document.getElementById('fruitTracker');
+                        const fruitIcons = fruitContainer.querySelectorAll('.tracker-icon');
+                        const fruitCountElement = document.getElementById('fruitCount');
+                        const fruitBadge = document.getElementById('fruitBadge');
+                        
+                        fruitTracker.filled = [];
+                        fruitTracker.count = 0;
+                        fruitIcons.forEach(icon => {
+                            icon.classList.remove('filled');
+                            icon.classList.add('empty');
+                        });
+                        if (fruitCountElement) {
+                            fruitCountElement.textContent = `0/${fruitTracker.max}`;
+                        }
+                        if (fruitBadge) {
+                            fruitBadge.classList.remove('show');
+                        }
+                        
+                        saveTrackers(trackers);
+                    }, 3000);
+                }
+            }
+            
+            // For water and activity, reset individually as before
+            if ((type === 'water' || type === 'activity') && tracker.count === tracker.max && badge) {
+                setTimeout(() => {
+                    const resetContainer = document.getElementById(`${type}Tracker`);
+                    if (!resetContainer) return;
+                    
+                    const resetIcons = resetContainer.querySelectorAll('.tracker-icon');
+                    const resetCountElement = document.getElementById(`${type}Count`);
+                    const resetBadge = document.getElementById(`${type}Badge`);
+                    
+                    tracker.filled = [];
+                    tracker.count = 0;
+                    
+                    resetIcons.forEach(icon => {
+                        icon.classList.remove('filled');
+                        icon.classList.add('empty');
+                    });
+                    
+                    if (resetCountElement) {
+                        resetCountElement.textContent = `0/${tracker.max}`;
+                    }
+                    
+                    if (resetBadge) {
+                        resetBadge.classList.remove('show');
+                    }
+                    
+                    saveTrackers(trackers);
+                }, 3000);
+            }
+        }
+        
+        // Modal Functions
+        function editTarget(trackerType, title) {
+            currentEditTracker = trackerType;
+            document.getElementById('modalTitle').textContent = `Edit ${title}`;
+            document.getElementById('modalInput').value = trackers[trackerType].max;
+            document.getElementById('targetModal').classList.add('show');
+        }
+        
+        function closeModal() {
+            document.getElementById('targetModal').classList.remove('show');
+            currentEditTracker = null;
+        }
+        
+        function saveTarget() {
+            if (!currentEditTracker) return;
+            
+            const newTarget = parseInt(document.getElementById('modalInput').value);
+            if (newTarget < 1 || newTarget > 20) {
+                alert('Please enter a target between 1 and 20');
+                return;
+            }
+            
+            trackers[currentEditTracker].max = newTarget;
+            trackers[currentEditTracker].filled = [];
+            trackers[currentEditTracker].count = 0;
+            
+            document.getElementById(`${currentEditTracker}Count`).textContent = `0/${newTarget}`;
+            
+            const container = document.getElementById(`${currentEditTracker}Tracker`);
+            if (container) {
+                const tracker = trackers[currentEditTracker];
+                const trackerType = currentEditTracker;
+                container.innerHTML = '';
+                for (let i = 0; i < tracker.max; i++) {
+                    const icon = document.createElement('div');
+                    icon.className = 'tracker-icon empty';
+                    icon.textContent = tracker.icon;
+                    (function(index, type) {
+                        icon.onclick = function() {
+                            toggleTrackerIcon(type, index);
+                        };
+                    })(i, trackerType);
+                    container.appendChild(icon);
+                }
+            }
+            
+            saveTrackers(trackers);
+            closeModal();
+        }
+        
+        document.getElementById('targetModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+        
+        // Initialize
+        initTrackers();
+    </script>
+</body>
+</html>
+
