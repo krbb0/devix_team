@@ -1,0 +1,75 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <title>Devix</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="styles.css" />
+
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <meta name="author" content="Devix" />
+
+    <meta
+      name="description"
+      content="a web application that helps young adults with cancer treatment during chemotherapy"
+    />
+  </head>
+
+  <body>
+    <div class="app alimentation">
+      <header class="top-bar">
+        <button class="icon-btn go-back" aria-label="GO back">
+          <img src="../../sources/images/arrow-left.svg" />
+        </button>
+
+        <div class="top-right">
+          <button class="icon-btn sound" aria-label="Toggle sound">
+            <img src="../../sources/images/volume-high.svg" />
+          </button>
+
+          <button class="icon-btn export" aria-label="Export chat">
+            <img src="../../sources/images/export.svg" />
+          </button>
+        </div>
+      </header>
+
+      <main class="chat-message">
+        <div class="greeting">
+          <img
+            src="../../sources/images/Blinky 5.svg"
+            alt="Blinky, Neural's mascot"
+            class="mascot"
+          />
+
+          <h1>Hello Anni, how are you feeling today?</h1>
+        </div>
+
+        <div class="chat-container"></div>
+      </main>
+
+      <footer class="chat-input">
+        <input type="text" placeholder="Just tell me..." />
+
+        <div class="chat-buttons">
+          <button class="icon-btn mic" aria-label="Voice input">
+            <img src="../../sources/images/microphone-2.svg" />
+          </button>
+
+          <button class="icon-btn send" aria-label="Send message">
+            <img src="../../sources/images/send.svg" />
+          </button>
+        </div>
+      </footer>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
